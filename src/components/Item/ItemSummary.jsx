@@ -3,12 +3,12 @@ import classes from './ItemSummary.module.css';
 const ItemsSummary = () => {
     return (
         <section className={classes.summary}>
-            <h2>Lorem ipsum dolor sit amet consectetur adipisicing elit. Vitae, ad.</h2>
+            <h2>Welcome to Reactcha</h2>
             <p>
-                Lorem ipsum dolor sit, amet consectetur adipisicing elit. Eligendi magni perspiciatis libero sequi neque ad eveniet laborum praesentium. Provident at repudiandae animi alias esse reprehenderit!
+                Your one-stop solution for all things matcha related built using React!
             </p>
             <p>
-                Lorem ipsum dolor sit, amet consectetur adipisicing elit. Eaque, nostrum! Ratione sequi nulla delectus illum deleniti, similique laudantium error aperiam nisi? Quaerat nesciunt corporis itaque.
+                Matcha (抹茶, English: /'mætʃə, 'ma:tʃə/; Japanese: [mattɕa]; Mandarin: [mwǒ.ʈʂʰá]; pinyin: mǒchá; Korean: 말차; RR: malcha) is finely ground powder of specially grown and processed green tea leaves, traditionally consumed in East Asia. The green tea plants used for matcha are shade-grown for three to four weeks before harvest; the stems and veins are removed during processing. During shaded growth, the plant Camellia sinensis produces more theanine and caffeine. The powdered form of matcha is consumed differently from tea leaves or tea bags, as it is suspended in a liquid, typically water or milk.
             </p>
         </section>
     );
