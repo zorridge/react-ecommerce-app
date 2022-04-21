@@ -1,42 +1,48 @@
-import classes from './AvailableItems.module.css';
+import Card from '../UI/Card';
+import ProductItem from './ProductItem/ProductItem';
+import classes from './ItemsList.module.css';
 
 const SEED_ITEMS = [
     {
-        id: 'm1',
+        id: 'id1',
         name: 'Sushi',
         description: 'Finest fish and veggies',
         price: 22.99,
     },
     {
-        id: 'm2',
+        id: 'id2',
         name: 'Schnitzel',
         description: 'A german specialty!',
         price: 16.5,
     },
     {
-        id: 'm3',
+        id: 'id3',
         name: 'Barbecue Burger',
         description: 'American, raw, meaty',
         price: 12.99,
     },
     {
-        id: 'm4',
+        id: 'id4',
         name: 'Green Bowl',
         description: 'Healthy...and green...',
         price: 18.99,
     },
 ];
 
-const AvailableItems = () => {
-    const itemsList = SEED_ITEMS.map(item => <li>{item.name}</li>);
+const ItemsList = () => {
+    const itemsList = SEED_ITEMS.map(item =>
+        <ProductItem key={item.id} product={item} />
+    );
 
     return (
         <section className={classes.items}>
-            <ul>
-                {itemsList}
-            </ul>
+            <Card>
+                <ul>
+                    {itemsList}
+                </ul>
+            </Card>
         </section>
     );
 };
 
-export default AvailableItems;
+export default ItemsList;

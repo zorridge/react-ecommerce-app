@@ -1,13 +1,13 @@
 import React from 'react';
 
 import ItemsSummary from './ItemSummary';
-import AvailableItems from './AvailableItems';
+import ItemsList from './ItemsList';
 
 const Items = () => {
     return (
         <React.Fragment>
             <ItemsSummary />
-            <AvailableItems />
+            <ItemsList />
         </React.Fragment>
     );
 };
