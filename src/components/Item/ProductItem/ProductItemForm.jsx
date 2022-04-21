@@ -30,7 +30,7 @@ const ProductItemForm = props => {
                     min: '1',
                     max: '5',
                     step: '1',
-                    default: '1'
+                    required: true
                 }} />
             <button>+ Add</button>
             {!inputIsValid && <p>Please enter a valid input (1-5).</p>}
