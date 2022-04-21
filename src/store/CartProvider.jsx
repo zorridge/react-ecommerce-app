@@ -8,37 +8,57 @@ const initialCartState = {
 };
 
 const cartReducer = (state, action) => {
-    switch (action.type) {
-        case 'ADD_ITEM':
-            const updatedTotalAmount = state.totalAmount + action.item.price * action.item.amount;
-            const cartItemIndex = state.items.findIndex(item => item.id === action.item.id);
-            let updatedItems;
+    if (action.type === 'ADD_ITEM') {
+        const updatedTotalAmount = state.totalAmount + action.item.price * action.item.amount;
+        const cartItemIndex = state.items.findIndex(item => item.id === action.item.id);
+        let updatedItems;
 
-            if (cartItemIndex === -1) {
-                // use .concat() instead of .push() because https://reactjs.org/docs/state-and-lifecycle.html#do-not-modify-state-directly
-                updatedItems = state.items.concat(action.item);
-            }
-            else {
-                // Spread existing cart item and overwrite amount
-                const updatedCartItem = {
-                    ...state.items[cartItemIndex],
-                    amount: state.items[cartItemIndex].amount + action.item.amount
-                };
-
-                // Copy over cart items and update existing item
-                updatedItems = [...state.items];
-                updatedItems[cartItemIndex] = updatedCartItem;
-            }
-
-            return {
-                items: updatedItems,
-                totalAmount: updatedTotalAmount
+        if (cartItemIndex === -1) {
+            // use .concat() instead of .push() because https://reactjs.org/docs/state-and-lifecycle.html#do-not-modify-state-directly
+            updatedItems = state.items.concat(action.item);
+        } else {
+            // Spread existing cart item and overwrite amount
+            const updatedCartItem = {
+                ...state.items[cartItemIndex],
+                amount: state.items[cartItemIndex].amount + action.item.amount
             };
-        case 'REMOVE_ITEM':
-            return;
-        default:
-            return initialCartState;
+
+            // Copy over cart items and update existing item
+            updatedItems = [...state.items];
+            updatedItems[cartItemIndex] = updatedCartItem;
+        }
+
+        return {
+            items: updatedItems,
+            totalAmount: updatedTotalAmount
+        };
     }
+
+    if (action.type === 'REMOVE_ITEM') {
+        const cartItemIndex = state.items.findIndex(item => item.id === action.id);
+        const existingCartItem = state.items[cartItemIndex];
+        const updatedTotalAmount = state.totalAmount - existingCartItem.price;
+        let updatedItems;
+
+        if (existingCartItem.amount === 1) {
+            updatedItems = state.items.filter(item => item.id !== action.id);
+        } else {
+            const updatedCartItem = {
+                ...existingCartItem,
+                amount: existingCartItem.amount - 1
+            };
+
+            updatedItems = [...state.items];
+            updatedItems[cartItemIndex] = updatedCartItem;
+        }
+
+        return {
+            items: updatedItems,
+            totalAmount: updatedTotalAmount
+        };
+    }
+
+    return initialCartState;
 };
 
 const CartProvider = props => {
