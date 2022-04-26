@@ -1,3 +1,10 @@
+.loading {
+    text-align: center;
+    color: white;
+    font-weight: 700;
+    font-size: 32px;
+}
+
 .items {
     max-width: 60rem;
     width: 90%;

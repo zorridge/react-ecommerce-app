@@ -1,45 +1,70 @@
+import { useEffect, useState } from 'react';
+
 import Card from '../UI/Card';
 import ProductItem from './ProductItem/ProductItem';
 import classes from './ItemsList.module.css';
 
-const SEED_ITEMS = [
-    {
-        id: 'id1',
-        name: 'Matcha (20g)',
-        description: 'What you\'re here for.',
-        price: 22.99,
-    },
-    {
-        id: 'id2',
-        name: 'Schnitzel',
-        description: 'A german specialty! It\'s my shop, I sell what I want.',
-        price: 16.5,
-    },
-    {
-        id: 'id3',
-        name: 'Matcha Whisk',
-        description: 'Do it the proper way.',
-        price: 12.99,
-    },
-    {
-        id: 'id4',
-        name: 'A Really Nice Japanese Cup',
-        description: 'When in Rome...',
-        price: 258.99,
-    },
-];
-
 const ItemsList = () => {
-    const itemsList = SEED_ITEMS.map(item =>
+    const [items, setItems] = useState([]);
+    const [isLoading, setIsLoading] = useState(true);
+    const [httpError, setHttpError] = useState(null);
+
+    useEffect(() => {
+        const fetchData = async () => {
+            const response = await fetch(
+                'https://react-reactcha-default-rtdb.asia-southeast1.firebasedatabase.app/products.json'
+            );
+
+            if (!response.ok) {
+                throw new Error(
+                    "Something went wrong... it's my fault, not yours!"
+                );
+            }
+
+            const data = await response.json();
+
+            const itemsData = [];
+            for (const key in data) {
+                itemsData.push({
+                    id: key,
+                    ...data[key],
+                });
+            }
+
+            setItems(itemsData);
+            setIsLoading(false);
+        };
+
+        fetchData().catch(error => {
+            setIsLoading(false);
+            setHttpError(error.message);
+        });
+    }, []);
+
+    if (isLoading) {
+        return (
+            <section className={classes.loading}>
+                <p>Loading data...</p>
+            </section>
+        );
+    }
+
+    if (httpError) {
+        return (
+            <section className={classes.loading}>
+                <p>{httpError}</p>
+            </section>
+        );
+    }
+
+    const itemsList = items.map(item => (
         <ProductItem key={item.id} product={item} />
-    );
+    ));
 
     return (
         <section className={classes.items}>
             <Card>
-                <ul>
-                    {itemsList}
-                </ul>
+                <ul>{itemsList}</ul>
             </Card>
         </section>
     );
