@@ -1,42 +1,83 @@
 import React from 'react';
-import { useRef } from 'react';
 
+import useInput from '../../hooks/use-input';
 import classes from './Checkout.module.css';
 
+const validateInput = inputValue => inputValue.trim() !== '';
+
 const Checkout = props => {
-    const nameInputRef = useRef();
-    const addressInputRef = useRef();
-    const remarksInputRef = useRef();
+    const {
+        value: inputName,
+        isValid: inputNameIsValid,
+        isError: inputNameIsError,
+        valueChangeHandler: nameValueHandler,
+        blurChangeHandler: nameBlurHandler,
+        reset: resetInputName,
+    } = useInput(validateInput);
+
+    const {
+        value: inputAddress,
+        isValid: inputAddressIsValid,
+        isError: inputAddressIsError,
+        valueChangeHandler: addressValueHandler,
+        blurChangeHandler: addressBlurHandler,
+        reset: resetInputAddress,
+    } = useInput(validateInput);
+
+    let formIsValid = false;
+    if (inputNameIsValid && inputAddressIsValid) {
+        formIsValid = true;
+    }
 
     const confirmCheckoutHandler = e => {
         e.preventDefault();
-
-        const nameInput = nameInputRef.current.value;
-        const addressInput = addressInputRef.current.value;
-        const remarksInput = remarksInputRef.current.value;
     };
+
+    const submitButtonClasses = formIsValid ? classes.submit : classes.disabled;
+    const nameControlClasses = !inputNameIsError
+        ? classes.control
+        : `${classes.control} ${classes.invalid}`;
+    const addressControlClasses = !inputAddressIsError
+        ? classes.control
+        : `${classes.control} ${classes.invalid}`;
 
     return (
         <form className={classes.form} onSubmit={confirmCheckoutHandler}>
             <div className={classes.wrapper}>
-                <div className={classes.control}>
+                <div className={nameControlClasses}>
                     <label htmlFor='name'>Name</label>
-                    <input type='text' id='name' ref={nameInputRef} />
+                    <input
+                        type='text'
+                        id='name'
+                        onChange={nameValueHandler}
+                        onBlur={nameBlurHandler}
+                        value={inputName}
+                    />
+                    {inputNameIsError && <p>Name must not be empty!</p>}
                 </div>
-                <div className={classes.control}>
+                <div className={addressControlClasses}>
                     <label htmlFor='address'>Address</label>
-                    <input type='text' id='address' ref={addressInputRef} />
+                    <input
+                        type='text'
+                        id='address'
+                        onChange={addressValueHandler}
+                        onBlur={addressBlurHandler}
+                        value={inputAddress}
+                    />
+                    {inputAddressIsError && <p>Address must not be empty!</p>}
                 </div>
                 <div className={classes.control}>
                     <label htmlFor='remarks'>Remarks</label>
-                    <input type='text' id='remarks' ref={remarksInputRef} />
+                    <input type='text' id='remarks' />
                 </div>
             </div>
             <div className={classes.actions}>
                 <button type='button' onClick={props.onShowCheckoutChange}>
                     Cancel
                 </button>
-                <button className={classes.submit}>Confirm</button>
+                <button className={submitButtonClasses} disabled={!formIsValid}>
+                    Confirm
+                </button>
             </div>
         </form>
     );
