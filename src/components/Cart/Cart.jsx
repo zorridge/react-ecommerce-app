@@ -1,6 +1,6 @@
 import { useContext, useState } from 'react';
 
-import CartContext from '../../store/cart-context';
+import CartContext from '../../context/cart-context';
 import Modal from '../UI/Modal';
 import CartItem from './CartItem';
 import Checkout from './Checkout';
