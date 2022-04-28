@@ -9,10 +9,8 @@ import classes from './Cart.module.css';
 const Cart = props => {
     const cartCtx = useContext(CartContext);
     const [isCheckout, setIsCheckout] = useState(false);
-
-    // const SEED_CART = [
-    //     { id: 'c1', name: 'Tea', amount: 2, price: 4.99 }
-    // ];
+    const [isSubmitting, setIsSubmitting] = useState(false);
+    const [hasSubmitted, setHasSubmitted] = useState(false);
 
     const totalAmount = `$${Math.abs(cartCtx.totalAmount.toFixed(2))}`;
     const hasItems = cartCtx.items.length > 0;
@@ -30,6 +28,23 @@ const Cart = props => {
 
     const showCheckoutHandler = () => {
         setIsCheckout(prevState => !prevState);
+    };
+
+    const submitCheckoutHandler = async userData => {
+        setIsSubmitting(true);
+        await fetch(
+            'https://react-reactcha-default-rtdb.asia-southeast1.firebasedatabase.app/orders.json',
+            {
+                method: 'POST',
+                body: JSON.stringify({
+                    user: userData,
+                    itemOrder: cartCtx.items,
+                }),
+            }
+        );
+        setIsSubmitting(false);
+        setHasSubmitted(true);
+        cartCtx.clearCart();
     };
 
     const cartItemList = (
@@ -62,17 +77,43 @@ const Cart = props => {
         </div>
     );
 
-    return (
-        <Modal onShowCartChange={props.onShowCartChange}>
+    const cartContent = (
+        <>
             {cartItemList}
             <div className={classes.total}>
                 <span>Total Amount</span>
                 <span>{totalAmount}</span>
             </div>
             {isCheckout && (
-                <Checkout onShowCheckoutChange={showCheckoutHandler} />
+                <Checkout
+                    onShowCheckoutChange={showCheckoutHandler}
+                    onSubmitCheckout={submitCheckoutHandler}
+                />
             )}
             {!isCheckout && modalActions}
+        </>
+    );
+
+    const cartSubmittingContent = <p>Submitting order...</p>;
+
+    const cartSubmittedContent = (
+        <>
+            <p>Order submitted!</p>
+            <div className={classes.actions}>
+                <button
+                    className={classes['button']}
+                    onClick={props.onShowCartChange}>
+                    Close
+                </button>
+            </div>
+        </>
+    );
+
+    return (
+        <Modal onShowCartChange={props.onShowCartChange}>
+            {!isSubmitting && !hasSubmitted && cartContent}
+            {isSubmitting && cartSubmittingContent}
+            {hasSubmitted && cartSubmittedContent}
         </Modal>
     );
 };

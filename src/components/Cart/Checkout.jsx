@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef } from 'react';
 
 import useInput from '../../hooks/use-input';
 import classes from './Checkout.module.css';
@@ -6,6 +6,8 @@ import classes from './Checkout.module.css';
 const validateInput = inputValue => inputValue.trim() !== '';
 
 const Checkout = props => {
+    const remarksInputRef = useRef();
+
     const {
         value: inputName,
         isValid: inputNameIsValid,
@@ -31,6 +33,16 @@ const Checkout = props => {
 
     const confirmCheckoutHandler = e => {
         e.preventDefault();
+
+        props.onSubmitCheckout({
+            name: inputName,
+            address: inputAddress,
+            remarks: remarksInputRef.current.value,
+        });
+
+        resetInputName();
+        resetInputAddress();
+        remarksInputRef.current.value = '';
     };
 
     const submitButtonClasses = formIsValid ? classes.submit : classes.disabled;
@@ -68,7 +80,7 @@ const Checkout = props => {
                 </div>
                 <div className={classes.control}>
                     <label htmlFor='remarks'>Remarks</label>
-                    <input type='text' id='remarks' />
+                    <input type='text' id='remarks' ref={remarksInputRef} />
                 </div>
             </div>
             <div className={classes.actions}>
