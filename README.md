@@ -1,5 +1,7 @@
 # React E-Shop
 
+![image](https://user-images.githubusercontent.com/86993236/166986066-ad4235a6-d398-4fc1-ab48-8eceb759b2e8.png)
+
 ## About
 
 Frontend only, with minimal backend implementions using Firebase Realtime Database as just a checkout destination.
