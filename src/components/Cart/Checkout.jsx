@@ -26,11 +26,13 @@ const Checkout = props => {
         reset: resetInputAddress,
     } = useInput(validateInput);
 
+    // Overall form validation state (for enabling submission button)
     let formIsValid = false;
     if (inputNameIsValid && inputAddressIsValid) {
         formIsValid = true;
     }
 
+    // Actual processing of checkout passed to Cart component for execution
     const confirmCheckoutHandler = e => {
         e.preventDefault();
 

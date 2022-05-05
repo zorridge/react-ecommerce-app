@@ -2,6 +2,7 @@ import { useReducer } from 'react';
 
 import CartContext from './cart-context';
 
+// Initial reducer state
 const initialCartState = {
     items: [],
     totalAmount: 0,
@@ -70,13 +71,14 @@ const cartReducer = (state, action) => {
     return initialCartState;
 };
 
+// Initialise context provider for consumption (context is a reducer hook, kinda)
 const CartProvider = props => {
     const [cartState, dispatchCartAction] = useReducer(
         cartReducer,
         initialCartState
     );
 
-    // item: {name, amount, price}
+    // Action handler functions to be used by consumers to trigger dispatching of actions
     const addItemHandler = item => {
         dispatchCartAction({ type: 'ADD_ITEM', item });
     };
@@ -89,8 +91,9 @@ const CartProvider = props => {
         dispatchCartAction({ type: 'CLEAR_CART' });
     };
 
+    // Value props to be passed down to consumers
     const cartContext = {
-        // item = {id, name, amount, price}
+        // item: {id, name, amount, price}
         items: cartState.items,
         totalAmount: cartState.totalAmount,
         addItem: addItemHandler,

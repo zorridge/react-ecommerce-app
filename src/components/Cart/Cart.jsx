@@ -30,6 +30,7 @@ const Cart = props => {
         setIsCheckout(prevState => !prevState);
     };
 
+    // Processing of checkout to Firebase
     const submitCheckoutHandler = async userData => {
         setIsSubmitting(true);
         await fetch(

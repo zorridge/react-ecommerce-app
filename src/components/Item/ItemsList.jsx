@@ -9,6 +9,7 @@ const ItemsList = () => {
     const [isLoading, setIsLoading] = useState(true);
     const [httpError, setHttpError] = useState(null);
 
+    // useEffect() cannot have an async callback -> workaround is to create an async fn and call it within the callback
     useEffect(() => {
         const fetchData = async () => {
             const response = await fetch(
@@ -35,11 +36,12 @@ const ItemsList = () => {
             setIsLoading(false);
         };
 
+        // See above
         fetchData().catch(error => {
             setIsLoading(false);
             setHttpError(error.message);
         });
-    }, []);
+    }, []); // Executes once only on mount
 
     if (isLoading) {
         return (
