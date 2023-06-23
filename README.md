@@ -1,6 +1,12 @@
 # React E-Shop
 
+[![Netlify Status](https://api.netlify.com/api/v1/badges/1e1da79d-9751-48f4-b280-aba7ade06bef/deploy-status)](https://app.netlify.com/sites/reactcha/deploys)
+
+![image](https://user-images.githubusercontent.com/86993236/166986066-ad4235a6-d398-4fc1-ab48-8eceb759b2e8.png)
+
 ## About
+
+Check it out here! https://reactcha.netlify.app/
 
 Frontend only, with minimal backend implementions using Firebase Realtime Database as just a checkout destination.
 
